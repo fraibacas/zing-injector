@@ -1,0 +1,8 @@
+export PUBSUB_EMULATOR_HOST=localhost:8085
+export PUBSUB_PROJECT_ID=zenoss-zing
+export GOOGLE_CLOUD_PROJECT=${PUBSUB_PROJECT_ID}
+export PROJECT_ID=${PUBSUB_PROJECT_ID}
+export FACTS_TOPIC_NAME=model-out
+export FACTS_SUBSCRIPTION_NAME=model-out-sub-model-id
+export METRICS_TOPIC_NAME=metric-in
+export METRICS_SUBSCRIPTION_NAME=metric-in-sub-ingest

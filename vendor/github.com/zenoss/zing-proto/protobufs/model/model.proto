@@ -1,0 +1,90 @@
+syntax = "proto3";
+package model;
+import "google/protobuf/any.proto";
+option java_package = "org.zenoss.zing.proto.model";
+option java_multiple_files = true;
+
+// Fact struct.
+message Fact {
+
+    // The fact id
+    string id = 1;
+
+    // The fact name
+    string name = 2;
+
+    // Dimensions associated with this fact.
+    map<string, string> dimensions = 3;
+
+    // Fields associated with this fact.
+    map<string, google.protobuf.Any> fields = 4;
+}
+
+// domain Entity struct.
+message Entity {
+
+    // The entity id
+    string id = 1;
+
+    // Fields associated with this entity.
+    map<string, google.protobuf.Any> fields = 2;
+
+    // Facts associated with this entity.
+    repeated string factIds = 3;
+
+    // contexts associated with this entity.
+    repeated string contexts = 4;
+}
+
+// database Entity struct.
+message EntityRecord {
+
+    message Field {
+        string key = 1;
+        google.protobuf.Any value = 2;
+    }
+
+    // Fields associated with this entity.
+    repeated Field fields = 1;
+
+    // Facts associated with this entity.
+    repeated string factIds = 2;
+
+    // contexts associated with this entity.
+    repeated string contexts = 3;
+}
+
+// domain TypedEntity struct.
+message TypedEntity {
+
+    // The typedentity id
+    string id = 1;
+
+    // The associated entity id
+    string entityId = 2;
+
+    // The associated schema id
+    string schemaId = 3;
+
+    // Fields associated with this fact.
+    map<string, google.protobuf.Any> fields = 4;
+}
+
+// database TypedEntity struct.
+message TypedEntityRecord {
+
+    // The associated entity id
+    string entityId = 1;
+
+    // The associated schema id
+    string schemaId = 2;
+
+    message Field {
+        string key = 1;
+        google.protobuf.Any value = 2;
+    }
+
+    // Fields associated with this entity.
+    repeated Field fields = 3;
+}
+

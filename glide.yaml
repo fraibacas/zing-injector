@@ -1,0 +1,21 @@
+package: zing-injector
+import:
+- package: cloud.google.com/go
+  subpackages:
+  - pubsub
+- package: github.com/golang/protobuf
+  subpackages:
+  - proto
+- package: github.com/pkg/errors
+- package: github.com/zenoss/zing-proto
+  subpackages:
+  - go/metric
+  - go/model
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: gopkg.in/urfave/cli.v1
+- package: github.com/sirupsen/logrus
+- package: github.com/Sirupsen/logrus
+  repo: https://github.com/sirupsen/logrus.git
+  version: 1.0.3

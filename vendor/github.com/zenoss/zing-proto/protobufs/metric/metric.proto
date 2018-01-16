@@ -1,0 +1,60 @@
+syntax = "proto3";
+package metric;
+option java_package = "org.zenoss.zing.proto.metric";
+option java_multiple_files = true;
+
+// Metric Time-Series struct. Used by OTSDB and RM_5.1 collectors
+message MetricTS {
+    
+    // The metric name
+    string metric = 1;
+
+    // The time at which the value was captured
+    int64 timestamp = 2;
+    
+    // The metric value
+    double value = 3;
+    
+    // Metadata associated with this datapoint.
+    map<string, string> tags = 4;
+}
+
+// Metric ZING Time-Series struct. Used for external datastores in ZING
+message MetricZTS {
+    
+    // The metric name
+    string metric = 1;
+
+    // The time at which the value was captured
+    int64 timestamp = 2;
+    
+    // The metric value
+    double value = 3;
+    
+    // Id of the metric instance that owns this datapoint.
+    string id = 4;
+}
+
+// Metric struct used for all metric related processing flows
+message Metric {
+    
+    // The metric name
+    string metric = 1;
+
+    // The time at which the value was captured
+    int64 timestamp = 2;
+
+    // The metric value
+    double value = 3;
+
+    // Identifies the MetricInstance that owns this datapoint
+    string id = 4;
+   
+    // Dimensions associated with this datapoint.
+    map<string, string> dimensions = 5;
+
+    // Metadata associated with this datapoint.
+    map<string, string> metadata = 6;
+    
+}
+

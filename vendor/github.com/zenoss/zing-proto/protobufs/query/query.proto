@@ -1,0 +1,83 @@
+syntax = "proto3";
+package query;
+option java_package = "org.zenoss.zing.proto.query";
+option java_multiple_files = true;
+import "metric/metric.proto";
+
+// Domain Query struct. Used by domain-query and datapipeline-query
+message Query {
+
+    // Fields needed for an ADHOC query
+    message AdHocQuery {
+        // The query string
+        string query_string = 1;
+
+        // Additional params needed to perform the query
+        map<string, string> query_params = 2;
+        
+        // Additional metadata associated with the query
+        map<string, string> metadata = 3;
+    }
+
+    // Fields needed for a TYPED query
+    message TypedQuery {
+        // The name of the type
+        string type = 1;
+
+        // TBD
+        // ...
+    }
+
+    // Fields needed for a METRIC query
+    message MetricQuery {
+        // The ID of the metric in the catalog
+        string metric_id = 1;
+
+        // The earliest (inclusive) timestamp desired
+        int64 start = 2;
+
+        // The latest (inclusive) timestamp desired (set to 0 to get latest)
+        int64 end = 3;
+
+        // Return only the most recent X datapoints within the time range.
+        int32 latest = 4;
+    }
+
+    // A unique ID of this query (Will be included in the results)
+	string id = 2;
+
+    // The remaining fields depend on the type of the query
+    oneof query_type {
+        AdHocQuery ad_hoc_query = 3;
+        TypedQuery typed_query = 4;
+        MetricQuery metric_query = 5;
+    }
+	
+}
+
+// Query result struct
+message Result {
+
+    // Identifies the ResultInstance that owns this data
+    string id = 1;
+
+    // Identifies the QueryInstance from which this ResultInstance was generated
+    string queryId = 2;
+
+    // Metadata associated with this result
+    map<string, string> metadata = 3;
+
+    // Timestamp when this result was retrieved
+    int64 timestamp = 4;
+
+    message MetaResult {
+        int64 count = 6;
+    }
+
+    // Result record
+    oneof result {
+        metric.MetricZTS metric_result = 5;
+        MetaResult meta_result = 7;
+
+    }
+}

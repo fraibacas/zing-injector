@@ -1,0 +1,13 @@
+[
+    {
+    "metric": "metric1",
+    "timestamp": 1515190262,
+    "value": 1.0,
+    "tags":{}
+    },{
+    "metric": "metric2",
+    "timestamp": 1515190262,
+    "value": 2.0,
+    "tags": {}
+    }
+]

@@ -1,0 +1,6 @@
+package: github.com/zenoss/zing-proto
+ignore:
+  - github.com/zenoss/zing-proto
+import:
+- package: github.com/golang/protobuf
+  version: 1e59b77b52bf8e4b449a57e6f79f21226d571845

@@ -1,0 +1,56 @@
+#! groovy
+
+MAKE='make -f Makefile'
+GIT_SHORT_NAME='zenoss/zing-proto'
+BRANCH=''
+
+node('docker') {
+
+    def deploy = false
+    if ( BRANCH == "develop" || BRANCH == "master"  ) {
+        deploy = true
+        currentBuild.displayName = "#${env.BUILD_NUMBER}@${env.NODE_NAME}"
+    } else {
+        currentBuild.displayName = "PR #${env.ghprbPullId}@${env.NODE_NAME}"
+    }
+
+    configFileProvider([
+        configFile(fileId: 'global', variable: 'GLOBAL'),
+        configFile(fileId: 'nexus-repos', variable: 'NEXUS'),
+    ]) {
+        global = load env.GLOBAL
+        nexus = load env.NEXUS
+    }
+
+    stage('Checkout') {
+        checkout scm
+    }
+
+    withEnv([
+        "PROJECT_NAME=${GIT_SHORT_NAME}-${env.BUILD_NUMBER}",
+        "ROOTDIR=${global.HOST_WORKSPACE}"]) {
+        try {
+            // The package stage verifies we can compile/assemble the artifact.
+            stage('Build library') {
+                sh("${MAKE} clean all_containerized")
+            }
+
+            if ( deploy ) {
+                stage('Deploy Jar(s)') {
+                    if ( BRANCH == "develop" ) {
+                       TARGET_MVN_REPO = nexus.SNAPSHOT_REPO
+                       MVN_DEPLOY_OPTS = '-DuniqueVersion=true'
+                    } else {
+                       TARGET_MVN_REPO = nexus.RELEASE_REPO
+                       MVN_DEPLOY_OPTS = ''
+                    }
+                    sh("TARGET_MVN_REPO=${TARGET_MVN_REPO} MVN_DEPLOY_OPTS=${MVN_DEPLOY_OPTS} ${MAKE} deploy")
+                }
+            }
+        } finally {
+            stage ('Clean test environment') {
+                sh("${MAKE} clean")
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+[{
+	"id": "ACME-RM1-ip11",
+	"name": "zenoss.snmp.Iface",
+	"dimensions": {
+		"tenant": "ACME",
+		"source": "RM1",
+		"context-uuid": "ip1",
+		"sub-source": "zenoss.snmp.Iface"
+	},
+	"fields": {
+		"ip": "10.10.10.10",
+		"macaddress": "63-99-E3-8C-3F-07"
+	}
+}]
